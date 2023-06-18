@@ -25,7 +25,7 @@ class Mapper {
 
                 // Serialized
                 objectMapper.writeValue(new File("src/main/resources/feedbackRequest.json"), request)
-                System.out.println("Request Object Serialized")
+                println("Request Object Serialized")
             } catch (Exception e) {
                 e.printStackTrace()
             }
@@ -38,11 +38,11 @@ class Mapper {
                 try {
                     // JSON --> OBJECT
                     FeedbackRequest feedbackRequest = objectMapper.readValue(new File("src/main/resources/feedbackRequest.json"), FeedbackRequest.class)
-                    System.out.println(feedbackRequest)
+                    println(feedbackRequest)
                 } catch (Exception e) {
                     e.printStackTrace()
                 }
-                System.out.println("Request Object De-Serialized")
+                println("Request Object De-Serialized")
             } catch (InterruptedException e) {
                 e.printStackTrace()
             }
@@ -56,6 +56,6 @@ class Mapper {
         serializationThread.join()
         deserializationThread.join()
 
-        System.out.println("Request Serialization/De-Serialization completed!!")
+        println("Request Serialization/De-Serialization completed!!")
     }
 }
