@@ -1,0 +1,17 @@
+{
+  "header": {
+    "url": "https://api.example.com/endpoint",
+    "contentType": "application/json",
+    "authorization": "HMAC-SHA256",
+    "apiKey": "your_api_key_here",
+    "apiSignature": "your_signature_here"
+  },
+  "payload": {
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "age": 30,
+    "address": "123 Main Street",
+    "city": "New York",
+    "country": "United States"
+  }
+}
