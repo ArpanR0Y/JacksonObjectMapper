@@ -1,28 +1,42 @@
 package Requests
 
+import Model.FeedbackHeader
+import Model.FeedbackPayload
+
 class FeedbackRequest {
 
-    String feedbackHeader
-    String feedbackRequest
+    FeedbackHeader feedbackHeader
+    FeedbackPayload feedbackPayload
 
-    FeedbackRequest(String feedbackHeader, String feedbackRequest) {
-        this.feedbackHeader = feedbackHeader
-        this.feedbackRequest = feedbackRequest
+    FeedbackRequest() {
     }
 
-    String getFeedbackHeader() {
+    FeedbackRequest(FeedbackHeader feedbackHeader, FeedbackPayload feedbackPayload) {
+        this.feedbackHeader = feedbackHeader
+        this.feedbackPayload = feedbackPayload
+    }
+
+    FeedbackHeader getFeedbackHeader() {
         return feedbackHeader
     }
 
-    void setFeedbackHeader(String feedbackHeader) {
+    void setFeedbackHeader(FeedbackHeader feedbackHeader) {
         this.feedbackHeader = feedbackHeader
     }
 
-    String getFeedbackRequest() {
-        return feedbackRequest
+    FeedbackPayload getFeedbackPayload() {
+        return feedbackPayload
     }
 
-    void setFeedbackRequest(String feedbackRequest) {
-        this.feedbackRequest = feedbackRequest
+    void setFeedbackPayload(FeedbackPayload feedbackPayload) {
+        this.feedbackPayload = feedbackPayload
+    }
+
+    @Override
+    public String toString() {
+        return "FeedbackRequest{" +
+                "feedbackHeader=" + feedbackHeader +
+                ", feedbackPayload=" + feedbackPayload +
+                '}';
     }
 }

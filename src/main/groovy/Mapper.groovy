@@ -1,47 +1,61 @@
-import Model.Person
-import Requests.Request
+import Model.FeedbackHeader
+import Model.FeedbackPayload
+import Requests.FeedbackRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 
 class Mapper {
-    static void main(String[] args) {
+    static void main(String[] args) throws InterruptedException {
         ObjectMapper objectMapper = new ObjectMapper()
 
-        try {
-//            //OBJECT --> JSON
-//            Person person = new Person("Jhon Doe",
-//                    "johndoe@example.com",
-//                    30,
-//                    "123 Main Street",
-//                    "New York",
-//                    "United States")
-//
-//            objectMapper.writeValue(new File("src/main/resources/person.json"), person)
+        Thread serializationThread = new Thread(() -> {
+            try {
+                // OBJECT --> JSON
+                FeedbackRequest request = new FeedbackRequest(
+                        new FeedbackHeader("https://api.example.com/endpoint",
+                                "application/json",
+                                "HMAC-SHA256",
+                                "your_api_key_here",
+                                "your_signature_here"),
+                        new FeedbackPayload("John Doe",
+                                "johndoe@example.com",
+                                30,
+                                "123 Main Street",
+                                "New York",
+                                "United States"))
 
-            //JSON --> OBJECT
-            InputStream requestStream = Mapper.class.getClassLoader().getResourceAsStream("request.json")
-//            String requestString = "{\n" +
-//                    "  \"header\": {\n" +
-//                    "    \"url\": \"https://api.example.com/endpoint\",\n" +
-//                    "    \"contentType\": \"application/json\",\n" +
-//                    "    \"authorization\": \"HMAC-SHA256\",\n" +
-//                    "    \"apiKey\": \"your_api_key_here\",\n" +
-//                    "    \"apiSignature\": \"your_signature_here\"\n" +
-//                    "  },\n" +
-//                    "  \"payload\": {\n" +
-//                    "    \"name\": \"John Doe\",\n" +
-//                    "    \"email\": \"johndoe@example.com\",\n" +
-//                    "    \"age\": 30,\n" +
-//                    "    \"address\": \"123 Main Street\",\n" +
-//                    "    \"city\": \"New York\",\n" +
-//                    "    \"country\": \"United States\"\n" +
-//                    "  }\n" +
-//                    "}\n"
+                // Serialized
+                objectMapper.writeValue(new File("src/main/resources/feedbackRequest.json"), request)
+                System.out.println("Request Object Serialized")
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
+        })
 
-            Request request = objectMapper.readValue(requestStream, Request)
+        Thread deserializationThread = new Thread(() -> {
+            try {
+                // Wait for serialization to complete before executing the deserialization process
+                serializationThread.join()
+                try {
+                    // JSON --> OBJECT
+                    FeedbackRequest feedbackRequest = objectMapper.readValue(new File("src/main/resources/feedbackRequest.json"), FeedbackRequest.class)
+                    System.out.println(feedbackRequest)
+                } catch (Exception e) {
+                    e.printStackTrace()
+                }
+                System.out.println("Request Object De-Serialized")
+            } catch (InterruptedException e) {
+                e.printStackTrace()
+            }
+        })
 
-            println(request)
-        } catch (Exception e) {
-            e.printStackTrace()
-        }
+        // Start both threads
+        serializationThread.start()
+        deserializationThread.start()
+
+        // Wait for both threads to complete
+        serializationThread.join()
+        deserializationThread.join()
+
+        System.out.println("Request Serialization/De-Serialization completed!!")
     }
 }

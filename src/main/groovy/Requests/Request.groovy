@@ -32,7 +32,6 @@ class Request {
         this.payload = payload
     }
 
-
     @Override
     public String toString() {
         return "Request{" +
